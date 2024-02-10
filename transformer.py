@@ -14,6 +14,11 @@ from torch.nn.modules.container import ModuleList
 from torch.nn.modules.normalization import LayerNorm
 
 
+class Encoder(nn.Module):
+
+    pass
+
+
 class Transformer(nn.Module):
 
     def __init__(self,
