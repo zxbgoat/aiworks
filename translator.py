@@ -95,12 +95,36 @@ class Translator(nn.Module):
                ) -> None:
         pass
 
+    def greedy_decode(src, src_mask, max_len, start_symbol):
+        pass
+
+    def translate(sentence: str):
+        pass
+
 
 class Trainer:
 
-    def __init__(self):
+    def __init__(self,
+                 model: nn.Module,
+                 epochs: int,
+                 batchsize: int):
+        self.model     = model
+        self.epochs    = epochs
+        self.batchsize = batchsize
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    
+    def __call__(self):
+        for epoch in range(1, self.epochs+1):
+            pass
+    
+    def collate_fn(self, batch):
+        pass
 
+    def train_epoch(self):
+        self.model.train()
+        losses = 0
+        data_iter = Multi30k(split='train', language_pair=('de', 'en'))
+        data_loader = DataLoader(data_iter, batch_size=self.batchsize, collate_fn=collate_fn)
 
 
 if __name__ == '__main__':
