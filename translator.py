@@ -16,6 +16,15 @@ from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader
 
 
+class Dataset:
+
+    def __init__(self):
+        self.src_lang = 'de'
+        self.tgt_lang = 'en'
+        self.src_tokens = get_tokenizer('spacy', language='de_core_news_sm')
+        self.tgt_tokens = get_tokenizer('spacy', language='en_core_web_sm')
+
+
 class PositEmbed(nn.Module):
 
     def __init__(self,
@@ -51,7 +60,7 @@ class TokenEmbed(nn.Module):
         return self.embed(tokens.long()) * math.sqrt(self.emb_size)
 
 
-class Seq2SeqTransformer(nn.Module):
+class Translator(nn.Module):
 
     def __init__(self,
                  num_enc_layers: int,
@@ -63,7 +72,7 @@ class Seq2SeqTransformer(nn.Module):
                  dim_ffn: int   = 512,
                  dropout: float = 0.1
                 ) -> None:
-        super(Seq2SeqTransformer, self).__init__()
+        super(Translator, self).__init__()
         self.generator = nn.Linear(emb_size, tgt_vocab_size)
         self.src_embed = TokenEmbed(src_vocab_size, emb_size)
         self.tgt_embed = TokenEmbed(tgt_vocab_size, emb_size)
@@ -88,8 +97,16 @@ class Seq2SeqTransformer(nn.Module):
 
 
 class Trainer:
-    pass
+
+    def __init__(self):
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 
 if __name__ == '__main__':
-    pass
+    EMB_SIZE = 512
+    NHEAD = 8
+    FFN_HID_DIM = 512
+    BATCH_SIZE = 128
+    NUM_ENCODER_LAYERS = 3
+    NUM_DECODER_LAYERS = 3
